@@ -20,7 +20,7 @@ public:
     ~LinkedList();
 
     void Display();
-    void Insert(int index, int x);
+    void Insert(int index, int value);
     int Delete(int index);
     int Length();
 };
@@ -59,9 +59,99 @@ LinkedList::~LinkedList()
     
 }
 
+void LinkedList::Display()
+{
+
+    Node *p = first;
+
+    while (p)
+    {
+        cout<<p->data <<" ";
+        p=p->next;
+    }   
+    cout<<endl;
+}
+
+int LinkedList::Length()
+{
+    int length = 0;
+    Node *p = first;
+    while (p)
+    {
+        length++;
+        p=p->next;
+    }
+    return length;
+}
+
+
+void LinkedList::Insert(int index, int value){
+
+    Node *t, *p= first;
+
+    if(index < 0 || index > Length())
+        return;
+    
+    t = new Node;
+    t->data = value; 
+    t->next = NULL;
+    
+    if(index == 0)
+    {
+        t->next = first;
+        first=t;
+    }
+    else
+    {
+        int i;
+        for(i=0; i<index-1;i++)
+            p=p->next;
+        
+        t->next = p->next;
+        p->next = t;
+    }
+
+}
+
+int LinkedList::Delete(int index)
+{
+    struct Node *p, *q = NULL;
+    int x=-1;
+
+    if(index < 1 || index > Length())
+    {
+        return -1;
+    }
+
+    if(index == 1)
+    {
+        p = first;
+        x = first->data;
+        first = first->next;
+        delete p;
+    }
+    else
+    {
+        p= first;
+        for(int i = 0; i < index-1; i++)
+        {
+            q = p;
+            p = p->next;
+        }
+
+        q->next = p->next;
+        x = p->data;
+        delete p;
+    }
+    return x;
+}
 
 int main(int argc, char const *argv[])
 {
-    /* code */
+    int A[] = {1,2,3,4,5};
+
+    LinkedList l(A, 5);
+    cout<<l.Delete(1)<<endl;
+    l.Display();
     return 0;
 }
