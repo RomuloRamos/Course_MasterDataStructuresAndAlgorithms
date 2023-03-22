@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.html": "html",
+        "random": "cpp",
+        "bitset": "cpp",
+        "set": "cpp",
+        "chrono": "cpp",
+        "variant": "cpp"
+    }
+}

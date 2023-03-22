@@ -1,0 +1,201 @@
+************************* Diferenças entre Heap e Stack ********************************************
+{
+    Heap:
+    Basicamente, a Heap é toda a memória disponível que temos para ser alocada. E, por conta disso, uma vez que se faça um 
+    malloc (por exemplo), a informação contida ali poderá ser acessada por todos os programas.
+
+    Stack:
+    É a memória dedicada a aplicação, de maneira ordenada, tal como um pilha. O espaço demandado por uma função é allocado 
+    alí, de maneira sequencial, mais rápido que na heap por malloc, só pode ser acessado diretamente pela função e será 
+    imediatamente desalocado quando a função terminar sua execução (sem demandar por um free).
+
+    Program Memory:
+    Esse é o espaço onde as instruções do programa é carregado. Todas as instruções ficam carregadas ali, aguardando por 
+    serem chamadas e alocadas na stack.
+}
+************************* Metodos de passagem em funções *******************************************
+{
+    ***Passagem por valor)
+
+    void função(int param1, int param1)
+    {
+    ...
+    }
+
+    Dessa forma, a função recebe valores que são atribuídos a variáveis locais, carregadas na parte da stack que é referente a função.
+
+    ***Passagem por endereço)
+
+    void função(int *param1, int *param1)
+    {
+    ...
+    }
+
+    Dessa forma, a função possui ponteiros locais que apontam para o endereço de memoria onde as variáveis estão contidas. 
+    Na stack, então, existe a função e ela possui dois ponteiros alocados.
+
+    ***Passagem por referencia (apenas c++)
+
+    void função(int &param1, int &param1)
+    {
+    ...
+    }
+
+    Dessa forma, a função acessa exatamente as mesmas variáveis da função que à chamou. A função, nesse caso, não possui um 
+    espaço proprio na stack, ela é anexada ao espaço da função que à chamou.
+    (Preciso confimar, mas talvez isso seja como o inline no C)
+}
+************************* Data structures **********************************************************
+{
+    ***
+        Data structure é a nomenclatura utilizada para referenciar a maneira como os dados são carregados e 
+    organizados dentro da Main Memory (memoria RAM?, memoria de runtime).
+    Quando uma aplicação é solicitada, suas instruções de maquina são carregadas do HD para a main Memory,
+    para então ser executada pela CPU. Supondo que essa aplicação demande por dados certos dados (um arquivo, 
+    ou informações de um banco de dados), os mesmos também são carregados da memoria não volatil (HD) 
+    para a Main Memory para serem manipulados.
+
+    CPU <-> Main Memory <-> Data Base (HD) <-> Data warehouse (Servidor de dados, muitos HDs) <-> Big Data (Dados da Internet)
+
+    ***
+    Static & Dinamic Memory Allocation
+    {
+        Toda memoria RAM é composta por segmentos, onde um segmento possui o seguinte formato:
+
+        SEGMENT 64KB                                    
+        ------------------------------------------      0 -> 65535 = 65536 bytes ... Divididos em linhas 64 linhas com 1024 bytes
+        -0XFC00(64512)...***********0XFFFF(65535)-      
+        -............................            -
+        -............................            -
+        -............................            -              
+        -0X800(2048)...*************0XBFF(3071)  -
+        -0X400(1024)...*************0X7FF(2047)  -
+        -0x00 ...*******************0x3FF(1023)  -
+        ------------------------------------------   
+
+        Desta maneira, uma memoria RAM de 4 GB nada mais é que uma memoria com 4*1024*1024 = 4 194 304 KB :. 4194304/64 = 65536 segments.
+
+        Main Memory use
+        {
+            Vamos supor uma Main Memory que possua apenas 1 segmento. Indiferente do numero de segmentos, a Main Memory 
+            sempre será dividida em 3 partes: 
+
+             - Code Section: espaço demandado para carregar as instruções de um programa. O tamanho dessa região oscilará 
+                    em função do tamanho do programa que será carregado nela.
+            
+            - Heap (unorganized): é um espaço entre a Code Memory e a Stack, sendo esse o espaço "livre", ou de comum 
+                    acesso por diferentes partes da aplicação;
+            
+            - Stack (organized): Pilha, é a parte onde cada função, ou bloco do programa, será carregado a medida que o 
+                    programa roda a partir da função main(). Assim, a main é a primeira função carrada ali, e a medida que 
+                    outras funções são chamadas e finalizadas, ocorre um empilhamento e desalocação do espaço demandado 
+                    para salvar os contextos de cada função na stack. Com isso, a heap vai perdendo ou ganhando espaço.
+
+            -****************************************-Stack 
+            -0XFC00(64512)...***********0XFFFF(65535)- Supondo que as funções carregadas (e seus contextos) nesse momento estejam consumindo 1024 bytes
+            -****************************************-Heap
+            -.....................................   - Espaço livre para ser demandado pela stack, ou por mallocs (C) e new (C++)
+            -.....................................   - Programas não podem acessar a heap diretamente. Para isso, precisam
+            -.....................................   - de ponteiros.
+            -.....................................   -
+            -.....................................   -
+            -****************************************-Code Section              
+            -0X800(2048)................0XBFF(3071)  - Supondo um programa com tamanho de 3072 Bytes
+            -0X400(1024)................0X7FF(2047)  -
+            -0x00 ......................0x3FF(1023)  -
+            ------------------------------------------   
+        }        
+    }
+
+    Types of Data structures
+    {
+        * Physical Data Structures ****
+
+        São exemplos o Array, ou a Lista Ligada.
+
+        O Array pode ser alocado tanto dentro da heap quanto da stack, enquanto a lista ligada só pode ser alocada na heap,
+        dinamicamente.
+
+        São chamados Estruturas de Dados Físicas por que definem a maneira como o dado será organizado na memória. Ou seja,
+        é mais relacionado à memória.
+
+
+        * Logial Data Structures ***
+
+        São exemplos:
+            Stack       :. LIFO     (Liner)
+            Queues      :. FIFO     (Liner)
+            Trees                   (Non-Linear)
+            Graph                   (Non-Linear)
+            Hash Table              (Table)
+
+        Essas estruturas não se preocupam com a maneira como a informação será organizada, mas sim com suas logicas de 
+        manipulação da informação (seus algoritmos). Elas, inclusive, se utilizam das estruturas físicas para salvar a informação.
+
+    }
+
+    Abstract Datatypes (ADT)
+    {
+        Definição de Datatype:
+            1) Representação da informação (data)
+                Como o dado é representado
+
+            2) Operação com o dado
+                Quais operações são permitidas serem feitas com esse dado
+
+            Assim, adotemos um datatype int (tipo primitivo).
+            Podemos pensar em sua representação como sendo um conjunto de 4 bytes que salva valores na momória, e cujo o ultimo
+            bit representa positivo ou negativo. E, com relação as suas operações posssíveis, podemos pensar em: soma, subtração,
+            multiplicação, módulo...
+
+        Abstract Datatypes
+            Trata-se portanto de uma abstração de Datatypes. Ou seja, uma definição de tipo de dado e de meios de uso abstraindo
+            detalhes internos.
+            Por exemplo, pode-se criar um tipo list, estipulando-se limites, espaço ocupado, etc (definição)... e quais 
+            as operações possíveis com essa lista como: adicionar elemento, remover elemento, fazer uma busca...
+            Aqui, como essa informação é armazenada na memória não é importante.
+    }
+
+    
+    THERE IS A SUBSECTION INSIDE THE CODE SECTION, CALLED SECTION, WHERE THE STATIC AND GLOBAL VARIABLES ARE SAVED!!! OMG!!! 
+
+    Code Section = Sessão onde as instruções e variaveis globais são carregadas (vem da memória não volatil e fica carregado ali enquanto o programa está em execução)
+    Stack = Local onde o contexto em execução está sendo carregado. Começa com a main function e vai chamando outras, alocando e desalocando espaço.
+    Heap = Memoria disponível, não sendo utilizada pela Stack (desprotegida, acessível por qualquer um com acesso ao barramento da memória física).
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

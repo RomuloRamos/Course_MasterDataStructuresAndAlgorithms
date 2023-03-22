@@ -1,0 +1,33 @@
+************************* structs e classes *****************************************
+Tanto no C quanto no C++ podemos estruturar um objeto através de uma struct.
+No C++, no entanto, podemos fazer a mudança de uma struct para uma class simplesmete trocando as palavras e inserindo 
+as funções de manipulação. Porém, diferente das structs, em uma class todos os seus elementos (funções e variáveis) são 
+privates por padrão. Assim, para tornar esses elementos publicos, devemos declarar isso através da definição "public:"
+
+Ex:
+struct Rectangle {
+    int largura;
+    int comprimento;
+}
+
+class Rectangle 
+{
+    int area;
+    int tamanho;
+public:
+    Rectangle( int l, int c){
+        largura(l);
+        comprimento(c);
+    }
+
+    int area()
+    {
+        return largura*comprimento;
+    }   
+
+}
+
+Em C++, também é possível declarar uma struct contendo funções. Porém, diferente de uma class, tudo dentro da struct será
+public por natureza.
+
+Arquivo de referencia: SimpleMonolitic.cpp
